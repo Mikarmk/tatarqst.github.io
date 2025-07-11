@@ -1,0 +1,686 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comfortaa', cursive;
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Фоновый оверлей для лучшей читаемости */
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
+
+.game-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+/* Главная страница - новая верстка */
+.main-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.grandmother-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.grandmother-image {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+.grandmother-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.grandmother-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Речевой пузырь */
+.speech-bubble {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    animation: fadeInRight 1s ease-out;
+}
+
+.bubble-content {
+    text-align: left;
+}
+
+.welcome-title {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.bubble-tail {
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 15px solid rgba(255, 255, 255, 0.95);
+}
+
+/* Витрина блюд */
+.dishes-showcase {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 1.2s ease-out;
+}
+
+.dishes-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.dish-card {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.dish-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-color: #74b9ff;
+}
+
+.dish-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.dish-card h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.dish-card p {
+    color: #7f8c8d;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Секция кнопки старта */
+.start-section {
+    text-align: center;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+.start-button {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    padding: 20px 50px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.start-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6);
+}
+
+.start-button:active {
+    transform: translateY(-1px);
+}
+
+.button-text {
+    position: relative;
+    z-index: 2;
+}
+
+.button-icon {
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Общие стили для игровых экранов */
+.game-screen {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 100%;
+    min-height: 600px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.screen-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.character-dialog {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.character-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    overflow: hidden;
+}
+
+.character-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.dialog-text {
+    flex: 1;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.next-button, .back-button {
+    background: linear-gradient(45deg, #74b9ff, #0984e3);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comfortaa', cursive;
+    margin: 10px;
+}
+
+.next-button:hover, .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(116, 185, 255, 0.4);
+}
+
+.back-button {
+    background: linear-gradient(45deg, #636e72, #2d3436);
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Drag and Drop стили */
+.draggable {
+    cursor: grab;
+    transition: transform 0.2s ease;
+}
+
+.draggable:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.drop-zone {
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.drop-zone.drag-over {
+    border-color: #74b9ff;
+    background-color: rgba(116, 185, 255, 0.1);
+}
+
+.ingredient-item {
+    display: inline-block;
+    background: white;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.ingredient-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Прогресс бар */
+.progress-bar {
+    background: #e9ecef;
+    border-radius: 10px;
+    height: 20px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(45deg, #00b894, #00cec9);
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .grandmother-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .grandmother-image img {
+        width: 250px;
+    }
+    
+    .speech-bubble {
+        max-width: 100%;
+    }
+    
+    .bubble-tail {
+        display: none;
+    }
+    
+    .dishes-title {
+        font-size: 1.6rem;
+    }
+    
+    .dishes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .character-dialog {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .character-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dishes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-container {
+        padding: 10px;
+    }
+    
+    .dishes-showcase {
+        padding: 20px;
+    }
+    
+    .grandmother-image img {
+        width: 200px;
+    }
+    
+    .welcome-title {
+        font-size: 1.8rem;
+    }
+    
+    .start-button {
+        padding: 15px 35px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Fallback для случая, когда изображения не загружены */
+.grandmother-image img[src*="grandmother.png"] {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+}
+
+body:not([style*="background-image"]) {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Стили для диалоговой системы в стиле визуальной новеллы */
+.vn-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.vn-character {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    width: 500px;
+    height: auto;
+    z-index: 2;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+.vn-character img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.vn-character.speaking {
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3)) brightness(1.1);
+    transform: scale(1.02);
+}
+
+.vn-dialog-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    border-top: 3px solid #74b9ff;
+    padding: 30px 40px;
+    z-index: 10;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: slideUpDialog 0.5s ease-out;
+}
+
+.vn-speaker-name {
+    color: #74b9ff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.vn-dialog-text {
+    color: #ffffff;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.vn-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vn-continue-hint {
+    color: #74b9ff;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    animation: pulse 2s infinite;
+}
+
+.vn-next-button {
+    background: linear-gradient(45deg, #74b9ff, #0984e3);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+}
+
+.vn-next-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(116, 185, 255, 0.4);
+}
+
+.vn-next-button:active {
+    transform: translateY(0);
+}
+
+.vn-skip-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.vn-skip-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Анимация печатающегося текста */
+.vn-dialog-text.typing {
+    overflow: hidden;
+}
+
+.vn-dialog-text.typing::after {
+    content: '|';
+    animation: blink 1s infinite;
+    color: #74b9ff;
+}
+
+/* Анимации для VN */
+@keyframes slideUpDialog {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+/* Адаптивность для VN */
+@media (max-width: 768px) {
+    .vn-character {
+        width: 400px;
+        right: 5%;
+    }
+    
+    .vn-dialog-box {
+        padding: 20px 25px;
+        min-height: 160px;
+    }
+    
+    .vn-speaker-name {
+        font-size: 1.1rem;
+    }
+    
+    .vn-dialog-text {
+        font-size: 1rem;
+        min-height: 50px;
+    }
+    
+    .vn-controls {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .vn-continue-hint {
+        text-align: center;
+        order: 1;
+    }
+    
+    .vn-next-button {
+        order: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .vn-character {
+        width: 320px;
+        right: 2%;
+    }
+    
+    .vn-dialog-box {
+        padding: 15px 20px;
+        min-height: 140px;
+    }
+    
+    .vn-speaker-name {
+        font-size: 1rem;
+    }
+    
+    .vn-dialog-text {
+        font-size: 0.95rem;
+        min-height: 45px;
+    }
+}

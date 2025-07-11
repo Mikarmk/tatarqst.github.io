@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чак-чак: Приготовление - Татарский мастер-класс</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .chak-chak-stages {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .stage-panel {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .stage-panel.active {
+            border: 3px solid #f39c12;
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+        }
+
+        .dough-preparation {
+            text-align: center;
+        }
+
+        .egg-cracking {
+            margin: 20px 0;
+        }
+
+        .egg {
+            width: 60px;
+            height: 80px;
+            background: linear-gradient(145deg, #fff, #f8f9fa);
+            border-radius: 30px 30px 40px 40px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        .egg:hover {
+            transform: scale(1.1);
+        }
+
+        .egg.cracked {
+            background: linear-gradient(145deg, #fdcb6e, #f39c12);
+            cursor: not-allowed;
+        }
+
+        .egg.cracked::after {
+            content: '🥚';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+        }
+
+        .mixing-bowl-chak {
+            width: 180px;
+            height: 120px;
+            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            border-radius: 0 0 90px 90px;
+            margin: 20px auto;
+            position: relative;
+            border: 3px solid #adb5bd;
+        }
+
+        .bowl-mixture {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 30px;
+            background: #fdcb6e;
+            border-radius: 0 0 70px 70px;
+            transition: all 0.5s ease;
+        }
+
+        .flour-adding {
+            margin: 20px 0;
+        }
+
+        .flour-scoop {
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .flour-scoop:hover {
+            transform: scale(1.2);
+        }
+
+        .flour-scoop.scooping {
+            animation: scooping 0.5s ease-in-out;
+        }
+
+        @keyframes scooping {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-15deg); }
+        }
+
+        .dough-rolling {
+            background: linear-gradient(145deg, #d2b48c, #daa520);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px solid #8b4513;
+        }
+
+        .dough-sheet {
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 10px;
+            margin: 20px auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dough-sheet:hover {
+            transform: scale(1.05);
+        }
+
+        .cutting-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+        }
+
+        .cutting-lines.visible {
+            display: block;
+        }
+
+        .cutting-line {
+            position: absolute;
+            background: #e17055;
+            opacity: 0;
+            animation: lineAppear 0.5s ease-out forwards;
+        }
+
+        .cutting-line.vertical {
+            width: 2px;
+            height: 100%;
+            top: 0;
+        }
+
+        .cutting-line.horizontal {
+            height: 2px;
+            width: 100%;
+            left: 0;
+        }
+
+        @keyframes lineAppear {
+            from { opacity: 0; transform: scale(0); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .dough-pieces {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .dough-pieces.visible {
+            display: grid;
+            animation: piecesAppear 1s ease-out;
+        }
+
+        @keyframes piecesAppear {
+            from { opacity: 0; transform: scale(0); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .dough-piece {
+            width: 25px;
+            height: 15px;
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dough-piece:hover {
+            transform: scale(1.2);
+        }
+
+        .dough-piece.fried {
+            background: linear-gradient(145deg, #d63031, #e17055);
+            cursor: not-allowed;
+        }
+
+        .frying-station {
+            text-align: center;
+        }
+
+        .oil-pot {
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(145deg, #2d3436, #636e72);
+            border-radius: 20px;
+            margin: 20px auto;
+            position: relative;
+            border: 5px solid #ddd;
+        }
+
+        .oil-surface {
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            right: 20px;
+            height: 80px;
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .oil-surface.bubbling {
+            animation: bubbling 1s ease-in-out infinite;
+        }
+
+        @keyframes bubbling {
+            0%, 100% { background: linear-gradient(145deg, #f39c12, #e67e22); }
+            50% { background: linear-gradient(145deg, #e67e22, #d35400); }
+        }
+
+        .frying-pieces {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .frying-piece {
+            width: 12px;
+            height: 8px;
+            background: #fdcb6e;
+            border-radius: 2px;
+            animation: frying 2s ease-in-out infinite;
+        }
+
+        .frying-piece:nth-child(2) { animation-delay: 0.2s; }
+        .frying-piece:nth-child(3) { animation-delay: 0.4s; }
+        .frying-piece:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes frying {
+            0%, 100% { transform: translateY(0) scale(1); background: #fdcb6e; }
+            50% { transform: translateY(-5px) scale(1.1); background: #e17055; }
+        }
+
+        .honey-station {
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .honey-pot {
+            width: 100px;
+            height: 120px;
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            border-radius: 10px 10px 50px 50px;
+            margin: 20px auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .honey-pot:hover {
+            transform: scale(1.05);
+        }
+
+        .honey-pot::before {
+            content: '🍯';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+        }
+
+        .honey-drip {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 20px;
+            background: #f39c12;
+            border-radius: 0 0 2px 2px;
+            display: none;
+            animation: dripping 2s ease-in-out infinite;
+        }
+
+        .honey-drip.visible {
+            display: block;
+        }
+
+        @keyframes dripping {
+            0% { height: 0; }
+            50% { height: 30px; }
+            100% { height: 0; }
+        }
+
+        .sugar-pot {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #fff, #f8f9fa);
+            border-radius: 10px;
+            margin: 20px auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #ddd;
+        }
+
+        .sugar-pot:hover {
+            transform: scale(1.05);
+        }
+
+        .sugar-pot::before {
+            content: '🍬';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+        }
+
+        .syrup-making {
+            background: linear-gradient(145deg, #fd79a8, #e84393);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .syrup-pot {
+            width: 120px;
+            height: 80px;
+            background: linear-gradient(145deg, #2d3436, #636e72);
+            border-radius: 10px;
+            margin: 20px auto;
+            position: relative;
+            border: 3px solid #ddd;
+        }
+
+        .syrup-content {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 40px;
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            border-radius: 0 0 40px 40px;
+        }
+
+        .syrup-content.boiling {
+            animation: syrupBoiling 1s ease-in-out infinite;
+        }
+
+        @keyframes syrupBoiling {
+            0%, 100% { background: linear-gradient(145deg, #f39c12, #e67e22); }
+            50% { background: linear-gradient(145deg, #e67e22, #d35400); }
+        }
+
+        .final-assembly {
+            background: linear-gradient(145deg, #d4edda, #c3e6cb);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .chak-chak-mold {
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            border-radius: 15px;
+            margin: 20px auto;
+            position: relative;
+            border: 3px solid #adb5bd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chak-chak-mold:hover {
+            transform: scale(1.05);
+        }
+
+        .chak-chak-pile {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 60%;
+            background: linear-gradient(145deg, #d63031, #e17055);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .chak-chak-pile.visible {
+            display: block;
+            animation: pileGrow 2s ease-out;
+        }
+
+        @keyframes pileGrow {
+            from { transform: translate(-50%, -50%) scale(0); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .indicator-step {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .indicator-step.completed {
+            background: linear-gradient(145deg, #00b894, #00cec9);
+            color: white;
+        }
+
+        .indicator-step.active {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .chak-chak-stages {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-screen">
+            <h1 class="screen-title">🍯 Чак-чак: Сладкий десерт</h1>
+            
+            <div class="character-dialog">
+                <div class="character-avatar">👵🏻</div>
+                <div class="dialog-text">
+                    <p><strong>Бабушка Фатима:</strong></p>
+                    <p id="dialog-text">Теперь приготовим чак-чак - традиционный татарский десерт! Сначала разобьём яйца и замесим крутое тесто.</p>
+                </div>
+            </div>
+
+            <div class="step-indicator">
+                <div class="indicator-step active" id="step-dough">
+                    <div>🥚</div>
+                    <div>Тесто</div>
+                </div>
+                <div class="indicator-step" id="step-cutting">
+                    <div>🔪</div>
+                    <div>Нарезка</div>
+                </div>
+                <div class="indicator-step" id="step-frying">
+                    <div>🔥</div>
+                    <div>Жарка</div>
+                </div>
+                <div class="indicator-step" id="step-syrup">
+                    <div>🍯</div>
+                    <div>Сироп</div>
+                </div>
+                <div class="indicator-step" id="step-assembly">
+                    <div>🏗️</div>
+                    <div>Сборка</div>
+                </div>
+            </div>
+
+            <div class="chak-chak-stages">
+                <div class="stage-panel active" id="dough-stage">
+                    <h3>🥚 Готовим тесто</h3>
+                    <div class="dough-preparation">
+                        <p>Разбей 4 яйца (нажми на каждое):</p>
+                        <div class="egg-cracking">
+                            <div class="egg" onclick="crackEgg(1)"></div>
+                            <div class="egg" onclick="crackEgg(2)"></div>
+                            <div class="egg" onclick="crackEgg(3)"></div>
+                            <div class="egg" onclick="crackEgg(4)"></div>
+                        </div>
+                        
+                        <div class="mixing-bowl-chak">
+                            <div class="bowl-mixture" id="bowl-mixture"></div>
+                        </div>
+                        
+                        <div class="flour-adding">
+                            <p>Добавь муку (нажми 5 раз):</p>
+                            <div class="flour-scoop" onclick="addFlour()">🥄</div>
+                            <div id="flour-count">Добавлено муки: 0/5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stage-panel" id="cutting-stage">
+                    <h3>🔪 Нарезаем тесто</h3>
+                    <div class="dough-rolling">
+                        <p>Нажми на тесто, чтобы раскатать и нарезать:</p>
+                        <div class="dough-sheet" id="dough-sheet" onclick="rollAndCut()">
+                            <div class="cutting-lines" id="cutting-lines">
+                                <div class="cutting-line vertical" style="left: 33%;"></div>
+                                <div class="cutting-line vertical" style="left: 66%;"></div>
+                                <div class="cutting-line horizontal" style="top: 25%;"></div>
+                                <div class="cutting-line horizontal" style="top: 50%;"></div>
+                                <div class="cutting-line horizontal" style="top: 75%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dough-pieces" id="dough-pieces">
+                            <!-- Кусочки теста будут добавлены через JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-panel" id="frying-stage" style="display: none;">
+                <h3>🔥 Жарим в масле</h3>
+                <div class="frying-station">
+                    <p>Нажми на кастрюлю, чтобы пожарить кусочки:</p>
+                    <div class="oil-pot" onclick="startFrying()">
+                        <div class="oil-surface" id="oil-surface">
+                            <div class="frying-pieces" id="frying-pieces">
+                                <div class="frying-piece"></div>
+                                <div class="frying-piece"></div>
+                                <div class="frying-piece"></div>
+                                <div class="frying-piece"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="frying-instruction">Кусочки жарятся...</div>
+                </div>
+            </div>
+
+            <div class="honey-station" id="honey-stage" style="display: none;">
+                <h3>🍯 Готовим медовый сироп</h3>
+                <div style="display: flex; justify-content: space-around; align-items: center;">
+                    <div>
+                        <p>Мёд</p>
+                        <div class="honey-pot" onclick="addHoney()">
+                            <div class="honey-drip" id="honey-drip"></div>
+                        </div>
+                    </div>
+                    <div style="font-size: 2rem;">+</div>
+                    <div>
+                        <p>Сахар</p>
+                        <div class="sugar-pot" onclick="addSugar()"></div>
+                    </div>
+                </div>
+                
+                <div class="syrup-making" id="syrup-making" style="display: none;">
+                    <h4>Варим сироп</h4>
+                    <div class="syrup-pot">
+                        <div class="syrup-content" id="syrup-content"></div>
+                    </div>
+                    <div id="syrup-instruction">Сироп варится...</div>
+                </div>
+            </div>
+
+            <div class="final-assembly" id="assembly-stage" style="display: none;">
+                <h3>🏗️ Собираем чак-чак</h3>
+                <p>Нажми на форму, чтобы собрать чак-чак:</p>
+                <div class="chak-chak-mold" onclick="assembleChakChak()">
+                    <div class="chak-chak-pile" id="chak-chak-pile"></div>
+                </div>
+                <div id="assembly-instruction">Смешай жареные кусочки с сиропом</div>
+            </div>
+
+            <div class="dialog-controls">
+                <button class="back-button" onclick="goBack()">Назад</button>
+                <button class="next-button" id="next-button" onclick="goToNext('../pages/tatar-tea-prep.html')" style="display: none;">Заварить чай</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../scripts/main.js"></script>
+    <script>
+        let currentStage = 'dough';
+        let crackedEggs = 0;
+        let flourAdded = 0;
+        let isCut = false;
+        let isFried = false;
+        let honeyAdded = false;
+        let sugarAdded = false;
+        let syrupReady = false;
+        
+        function crackEgg(eggNumber) {
+            const egg = event.target;
+            if (egg.classList.contains('cracked')) return;
+            
+            egg.classList.add('cracked');
+            crackedEggs++;
+            
+            // Обновляем содержимое миски
+            updateBowlMixture();
+            
+            if (crackedEggs === 4) {
+                document.getElementById('dialog-text').textContent = 
+                    'Все яйца разбиты! Теперь добавь муку для крутого теста.';
+            }
+            
+            playSound('crack');
+        }
+        
+        function updateBowlMixture() {
+            const bowlMixture = document.getElementById('bowl-mixture');
+            const height = Math.min(crackedEggs * 8 + flourAdded * 5, 60);
+            bowlMixture.style.height = height + 'px';
+            
+            if (flourAdded > 0) {
+                bowlMixture.style.background = '#fff3cd';
+            }
+        }
+        
+        function addFlour() {
+            if (crackedEggs < 4) {
+                showMessage('Сначала разбей все яйца!');
+                return;
+            }
+            
+            flourAdded++;
+            
+            const flourScoop = document.querySelector('.flour-scoop');
+            flourScoop.classList.add('scooping');
+            setTimeout(() => flourScoop.classList.remove('scooping'), 500);
+            
+            document.getElementById('flour-count').textContent = 
+                `Добавлено муки: ${flourAdded}/5`;
+            
+            updateBowlMixture();
+            
+            if (flourAdded >= 5) {
+                setTimeout(() => {
+                    completeDoughStage();
+                }, 1000);
+            }
+            
+            playSound('scoop');
+        }
+        
+        function completeDoughStage() {
+            document.getElementById('step-dough').classList.remove('active');
+            document.getElementById('step-dough').classList.add('completed');
+            document.getElementById('step-cutting').classList.add('active');
+            
+            document.getElementById('dough-stage').classList.remove('active');
+            document.getElementById('cutting-stage').classList.add('active');
+            
+            document.getElementById('dialog-text').textContent = 
+                'Тесто готово! Теперь раскатай и нарежь его на кусочки.';
+            
+            currentStage = 'cutting';
+            showSuccessMessage('Тесто готово!');
+        }
+        
+        function rollAndCut() {
+            if (currentStage !== 'cutting' || isCut) return;
+            
+            const cuttingLines = document.getElementById('cutting-lines');
+            cuttingLines.classList.add('visible');
+            
+            setTimeout(() => {
+                createDoughPieces();
+                isCut = true;
+                
+                setTimeout(() => {
+                    completeCuttingStage();
+                }, 1000);
+            }, 1500);
+            
+            playSound('cut');
+        }
+        
+        function createDoughPieces() {
+            const doughPieces = document.getElementById('dough-pieces');
+            doughPieces.innerHTML = '';
+            
+            for (let i = 0; i < 24; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'dough-piece';
+                piece.onclick = () => selectPieceForFrying(piece);
+                doughPieces.appendChild(piece);
+            }
+            
+            doughPieces.classList.add('visible');
+        }
+        
+        function selectPieceForFrying(piece) {
+            if (currentStage !== 'frying') return;
+            
+            piece.classList.add('fried');
+            
+            // Проверяем, все ли кусочки пожарены
+            const allPieces = document.querySelectorAll('.dough-piece');
+            const friedPieces = document.querySelectorAll('.dough-piece.fried');
+            
+            if (friedPieces.length === allPieces.length) {
+                setTimeout(() => {
+                    completeFryingStage();
+                }, 1000);
+            }
+        }
+        
+        function completeCuttingStage() {
+            document.getElementById('step-cutting').classList.remove('active');
+            document.getElementById('step-cutting').classList.add('completed');
+            document.getElementById('step-frying').classList.add('active');
+            
+            document.getElementById('cutting-stage').classList.remove('active');
+            document.getElementById('frying-stage').style.display = 'block';
+            
+            document.getElementById('dialog-text').textContent = 
+                'Кусочки нарезаны! Теперь пожарь их в масле.';
+            
+            currentStage = 'frying';
+            showSuccessMessage('Тесто нарезано!');
+        }
+        
+        function startFrying() {
+            if (currentStage !== 'frying' || isFried) return;
+            
+            const oilSurface = document.getElementById('oil-surface');
+            oilSurface.classList.add('bubbling');
+            
+            document.getElementById('frying-instruction').textContent = 
+                'Нажимай на кусочки теста, чтобы пожарить их!';
+            
+            isFried = true;
+            playSound('fry');
+        }
+        
+        function completeFryingStage() {
+            document.getElementById('step-frying').classList.remove('active');
+            document.getElementById('step-frying').classList.add('completed');
+            document.getElementById('step-syrup').classList.add('active');
+            
+            document.getElementById('frying-stage').style.display = 'none';
+            document.getElementById('honey-stage').style.display = 'block';
+            
+            document.getElementById('dialog-text').textContent = 
+                'Все кусочки пожарены! Теперь приготовим медовый сироп.';
+            
+            currentStage = 'syrup';
+            showSuccessMessage('Кусочки пожарены!');
+        }
+        
+        function addHoney() {
+            if (honeyAdded) return;
+            
+            honeyAdded = true;
+            const honeyDrip = document.getElementById('honey-drip');
+            honeyDrip.classList.add('visible');
+            
+            checkSyrupIngredients();
+            playSound('pour');
+        }
+        
+        function addSugar() {
+            if (sugarAdded) return;
+            
+            sugarAdded = true;
+            event.target.style.background = 'linear-gradient(145deg, #fdcb6e, #f39c12)';
+            
+            checkSyrupIngredients();
+            playSound('pour');
+        }
+        
+        function checkSyrupIngredients() {
+            if (honeyAdded && sugarAdded) {
+                document.getElementById('syrup-making').style.display = 'block';
+                
+                const syrupContent = document.getElementById('syrup-content');
+                syrupContent.classList.add('boiling');
+                
+                setTimeout(() => {
+                    completeSyrupStage();
+                }, 3000);
+            }
+        }
+        
+        function completeSyrupStage() {
+            document.getElementById('step-syrup').classList.remove('active');
+            document.getElementById('step-syrup').classList.add('completed');
+            document.getElementById('step-assembly').classList.add('active');
+            
+            document.getElementById('honey-stage').style.display = 'none';
+            document.getElementById('assembly-stage').style.display = 'block';
+            
+            document.getElementById('dialog-text').textContent = 
+                'Сироп готов! Теперь собери чак-чак.';
+            
+            currentStage = 'assembly';
+            syrupReady = true;
+            showSuccessMessage('Медовый сироп готов!');
+        }
+        
+        function assembleChakChak() {
+            if (currentStage !== 'assembly' || !syrupReady) return;
+            
+            const chakChakPile = document.getElementById('chak-chak-pile');
+            chakChakPile.classList.add('visible');
+            
+            document.getElementById('assembly-instruction').textContent = 
+                'Чак-чак готов!';
+            
+            setTimeout(() => {
+                completeChakChakStage();
+            }, 2000);
+            
+            playSound('assemble');
+        }
+        
+        function completeChakChakStage() {
+            document.getElementById('step-assembly').classList.remove('active');
+            document.getElementById('step-assembly').classList.add('completed');
+            
+            document.getElementById('next-button').style.display = 'block';
+            document.getElementById('dialog-text').textContent = 
+                'Замечательно! Чак-чак готов. Теперь заварим традиционный татарский чай!';
+        }
+        
+        function goBack() {
+            window.location.href = '../pages/kystybyi-prep.html';
+        }
+        
+        function goToNext(nextPage) {
+            window.location.href = nextPage;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Эчпочмак: Подготовка теста - Татарский мастер-класс</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .cooking-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .ingredients-panel {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .mixing-bowl {
+            background: linear-gradient(145deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bowl-container {
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .bowl {
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            border-radius: 0 0 100px 100px;
+            margin: 0 auto;
+            position: relative;
+            border: 3px solid #adb5bd;
+        }
+
+        .bowl-content {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 20px;
+            background: #f8d7da;
+            border-radius: 0 0 80px 80px;
+            transition: all 0.5s ease;
+        }
+
+        .ingredient-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: grab;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ingredient-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .ingredient-item.used {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f8f9fa;
+        }
+
+        .ingredient-icon {
+            font-size: 1.5rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ddd;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #74b9ff;
+            background-color: rgba(116, 185, 255, 0.1);
+        }
+
+        .step-instructions {
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: #e17055;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .mixing-animation {
+            animation: mixing 2s ease-in-out infinite;
+        }
+
+        @keyframes mixing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        .dough-progress {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .dough-stage {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .dough-stage.active {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .cooking-area {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-screen">
+            <h1 class="screen-title">🥟 Эчпочмак: Готовим тесто</h1>
+            
+            <div class="character-dialog">
+                <div class="character-avatar">👵🏻</div>
+                <div class="dialog-text">
+                    <p><strong>Бабушка Фатима:</strong></p>
+                    <p>Начнём с теста для эчпочмака. Перетащи ингредиенты в миску в правильном порядке. Сначала жидкие ингредиенты, потом сухие!</p>
+                </div>
+            </div>
+
+            <div class="step-instructions">
+                <div class="step-number">1</div>
+                <strong>Шаг 1:</strong> Добавь в миску молоко, яйцо и растопленное сливочное масло
+            </div>
+
+            <div class="cooking-area">
+                <div class="ingredients-panel">
+                    <h3>Ингредиенты для теста</h3>
+                    <div class="ingredients-list">
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="молоко" data-order="1">
+                            <span class="ingredient-icon">🥛</span>
+                            <span>Молоко (200 мл)</span>
+                        </div>
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="яйцо" data-order="2">
+                            <span class="ingredient-icon">🥚</span>
+                            <span>Яйцо (1 шт)</span>
+                        </div>
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="масло сливочное" data-order="3">
+                            <span class="ingredient-icon">🧈</span>
+                            <span>Масло сливочное (100 г)</span>
+                        </div>
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="соль" data-order="4">
+                            <span class="ingredient-icon">🧂</span>
+                            <span>Соль (½ ч.л.)</span>
+                        </div>
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="сахар" data-order="5">
+                            <span class="ingredient-icon">🍬</span>
+                            <span>Сахар (1 ч.л.)</span>
+                        </div>
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="дрожжи" data-order="6">
+                            <span class="ingredient-icon">🍞</span>
+                            <span>Дрожжи сухие (1 ч.л.)</span>
+                        </div>
+                        <div class="ingredient-item draggable" draggable="true" data-ingredient="мука" data-order="7">
+                            <span class="ingredient-icon">🌾</span>
+                            <span>Мука (500-600 г)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mixing-bowl">
+                    <h3>Миска для замешивания</h3>
+                    <div class="bowl-container">
+                        <div class="bowl" id="mixing-bowl">
+                            <div class="bowl-content" id="bowl-content"></div>
+                        </div>
+                    </div>
+                    <div class="drop-zone" id="drop-zone" data-accepts="молоко,яйцо,масло сливочное,соль,сахар,дрожжи,мука">
+                        Перетащи ингредиенты сюда
+                    </div>
+                </div>
+            </div>
+
+            <div class="dough-progress">
+                <div class="dough-stage active" id="stage-1">
+                    <div>🥛</div>
+                    <div>Жидкие</div>
+                </div>
+                <div class="dough-stage" id="stage-2">
+                    <div>🧂</div>
+                    <div>Специи</div>
+                </div>
+                <div class="dough-stage" id="stage-3">
+                    <div>🌾</div>
+                    <div>Мука</div>
+                </div>
+                <div class="dough-stage" id="stage-4">
+                    <div>🤲</div>
+                    <div>Замес</div>
+                </div>
+            </div>
+
+            <div class="dialog-controls">
+                <button class="back-button" onclick="goBack()">Назад</button>
+                <button class="next-button" id="next-button" onclick="goToNext('../pages/echpochmak-dough.html')" style="display: none;">Замесить тесто</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../scripts/main.js"></script>
+    <script>
+        let addedIngredients = [];
+        let currentStage = 1;
+        const requiredOrder = ['молоко', 'яйцо', 'масло сливочное', 'соль', 'сахар', 'дрожжи', 'мука'];
+        
+        function initDoughPrep() {
+            const dropZone = document.getElementById('drop-zone');
+            const draggables = document.querySelectorAll('.draggable');
+            
+            // Инициализация drag and drop
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+            
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('dragenter', handleDragEnter);
+            dropZone.addEventListener('dragleave', handleDragLeave);
+            dropZone.addEventListener('drop', handleDrop);
+        }
+        
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.ingredient);
+            e.target.style.opacity = '0.5';
+        }
+        
+        function handleDragEnd(e) {
+            e.target.style.opacity = '1';
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+        
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.classList.add('drag-over');
+        }
+        
+        function handleDragLeave(e) {
+            e.target.classList.remove('drag-over');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            e.target.classList.remove('drag-over');
+            
+            const ingredient = e.dataTransfer.getData('text/plain');
+            addIngredient(ingredient);
+        }
+        
+        function addIngredient(ingredient) {
+            if (addedIngredients.includes(ingredient)) return;
+            
+            addedIngredients.push(ingredient);
+            
+            // Отмечаем ингредиент как использованный
+            const ingredientElement = document.querySelector(`[data-ingredient="${ingredient}"]`);
+            if (ingredientElement) {
+                ingredientElement.classList.add('used');
+                ingredientElement.draggable = false;
+            }
+            
+            // Обновляем содержимое миски
+            updateBowlContent();
+            
+            // Обновляем стадии
+            updateStages();
+            
+            // Проверяем завершение
+            checkCompletion();
+        }
+        
+        function updateBowlContent() {
+            const bowlContent = document.getElementById('bowl-content');
+            const bowl = document.getElementById('mixing-bowl');
+            
+            // Изменяем цвет и высоту содержимого в зависимости от добавленных ингредиентов
+            let height = Math.min(addedIngredients.length * 15, 80);
+            let color = '#f8d7da';
+            
+            if (addedIngredients.includes('молоко')) color = '#fff';
+            if (addedIngredients.includes('яйцо')) color = '#fff3cd';
+            if (addedIngredients.includes('мука')) color = '#f8f9fa';
+            
+            bowlContent.style.height = height + 'px';
+            bowlContent.style.background = color;
+            
+            // Добавляем анимацию перемешивания
+            if (addedIngredients.length > 2) {
+                bowl.classList.add('mixing-animation');
+                setTimeout(() => bowl.classList.remove('mixing-animation'), 2000);
+            }
+        }
+        
+        function updateStages() {
+            // Обновляем активные стадии
+            if (addedIngredients.includes('молоко') && addedIngredients.includes('яйцо') && addedIngredients.includes('масло сливочное')) {
+                document.getElementById('stage-1').classList.add('active');
+                document.getElementById('stage-2').classList.add('active');
+                currentStage = 2;
+            }
+            
+            if (addedIngredients.includes('соль') && addedIngredients.includes('сахар') && addedIngredients.includes('дрожжи')) {
+                document.getElementById('stage-3').classList.add('active');
+                currentStage = 3;
+            }
+            
+            if (addedIngredients.includes('мука')) {
+                document.getElementById('stage-4').classList.add('active');
+                currentStage = 4;
+            }
+        }
+        
+        function checkCompletion() {
+            if (addedIngredients.length === requiredOrder.length) {
+                // Проверяем правильность порядка (для первых 3 ингредиентов)
+                const liquidIngredients = ['молоко', 'яйцо', 'масло сливочное'];
+                const hasAllLiquids = liquidIngredients.every(ing => addedIngredients.includes(ing));
+                
+                if (hasAllLiquids) {
+                    showSuccessMessage('Отлично! Все ингредиенты добавлены правильно!');
+                    document.getElementById('next-button').style.display = 'block';
+                    
+                    // Обновляем инструкции
+                    const instructions = document.querySelector('.step-instructions');
+                    instructions.innerHTML = `
+                        <div class="step-number">✓</div>
+                        <strong>Готово!</strong> Все ингредиенты добавлены. Теперь нужно хорошо замесить тесто.
+                    `;
+                    instructions.style.background = 'linear-gradient(145deg, #d4edda, #c3e6cb)';
+                }
+            }
+        }
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.innerHTML = `✅ ${message}`;
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #00b894, #00cec9);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 15px;
+                font-size: 1.2rem;
+                z-index: 1000;
+                animation: fadeInUp 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', initDoughPrep);
+    </script>
+</body>
+</html>
