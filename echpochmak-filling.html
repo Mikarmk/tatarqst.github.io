@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Эчпочмак: Приготовление начинки - Татарский мастер-класс</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .cutting-board-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .ingredients-panel {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .cutting-board {
+            background: linear-gradient(145deg, #d2b48c, #daa520);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 400px;
+            position: relative;
+            border: 3px solid #8b4513;
+        }
+
+        .cutting-board::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid #a0522d;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .ingredient-to-cut {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ingredient-to-cut:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: #74b9ff;
+        }
+
+        .ingredient-to-cut.selected {
+            background: linear-gradient(145deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        .ingredient-to-cut.cut {
+            background: linear-gradient(145deg, #00b894, #00cec9);
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .ingredient-icon {
+            font-size: 2rem;
+        }
+
+        .ingredient-info {
+            flex: 1;
+        }
+
+        .ingredient-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cut-instruction {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .cutting-area {
+            position: relative;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #8b4513;
+        }
+
+        .cutting-area.active {
+            border-color: #74b9ff;
+            background: rgba(116, 185, 255, 0.1);
+        }
+
+        .ingredient-on-board {
+            position: absolute;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-on-board:hover {
+            transform: scale(1.1);
+        }
+
+        .knife {
+            position: absolute;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .knife.cutting {
+            animation: cuttingMotion 0.5s ease-in-out;
+        }
+
+        @keyframes cuttingMotion {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(-15deg) scale(1.2); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .cut-pieces {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .cut-piece {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            animation: pieceAppear 0.5s ease-out;
+        }
+
+        @keyframes pieceAppear {
+            from { opacity: 0; transform: scale(0); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .mixing-bowl {
+            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            border-radius: 50%;
+            width: 150px;
+            height: 100px;
+            margin: 20px auto;
+            position: relative;
+            border: 3px solid #adb5bd;
+        }
+
+        .bowl-contents {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 30px;
+            background: #8b4513;
+            border-radius: 0 0 60px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            transition: all 0.5s ease;
+        }
+
+        .seasoning-area {
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .seasoning-item {
+            display: inline-block;
+            background: white;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .seasoning-item:hover {
+            transform: translateY(-2px);
+            border-color: #e17055;
+        }
+
+        .seasoning-item.added {
+            background: linear-gradient(145deg, #e17055, #d63031);
+            color: white;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .step-indicator {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .step-indicator.completed {
+            background: linear-gradient(145deg, #00b894, #00cec9);
+            color: white;
+        }
+
+        .step-indicator.active {
+            background: linear-gradient(145deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .cutting-board-area {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-screen">
+            <h1 class="screen-title">🔪 Эчпочмак: Готовим начинку</h1>
+            
+            <div class="character-dialog">
+                <div class="character-avatar">👵🏻</div>
+                <div class="dialog-text">
+                    <p><strong>Бабушка Фатима:</strong></p>
+                    <p id="dialog-text">Теперь приготовим начинку. Нарежь мясо, картофель и лук мелкими кубиками. Нажимай на ингредиенты, чтобы выбрать их для нарезки!</p>
+                </div>
+            </div>
+
+            <div class="progress-indicator">
+                <div class="step-indicator active" id="step-meat">
+                    <div>🥩</div>
+                    <div>Мясо</div>
+                </div>
+                <div class="step-indicator" id="step-potato">
+                    <div>🥔</div>
+                    <div>Картофель</div>
+                </div>
+                <div class="step-indicator" id="step-onion">
+                    <div>🧅</div>
+                    <div>Лук</div>
+                </div>
+                <div class="step-indicator" id="step-season">
+                    <div>🧂</div>
+                    <div>Приправы</div>
+                </div>
+            </div>
+
+            <div class="cutting-board-area">
+                <div class="ingredients-panel">
+                    <h3>Ингредиенты для начинки</h3>
+                    <div class="ingredients-list">
+                        <div class="ingredient-to-cut" data-ingredient="meat" onclick="selectIngredient('meat')">
+                            <span class="ingredient-icon">🥩</span>
+                            <div class="ingredient-info">
+                                <div class="ingredient-name">Говядина (300 г)</div>
+                                <div class="cut-instruction">Нарезать мелким кубиком</div>
+                            </div>
+                        </div>
+                        <div class="ingredient-to-cut" data-ingredient="potato" onclick="selectIngredient('potato')">
+                            <span class="ingredient-icon">🥔</span>
+                            <div class="ingredient-info">
+                                <div class="ingredient-name">Картофель (2-3 шт)</div>
+                                <div class="cut-instruction">Нарезать мелким кубиком</div>
+                            </div>
+                        </div>
+                        <div class="ingredient-to-cut" data-ingredient="onion" onclick="selectIngredient('onion')">
+                            <span class="ingredient-icon">🧅</span>
+                            <div class="ingredient-info">
+                                <div class="ingredient-name">Лук (1-2 шт)</div>
+                                <div class="cut-instruction">Нарезать мелко</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mixing-bowl">
+                        <div class="bowl-contents" id="bowl-contents">
+                            Пусто
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cutting-board">
+                    <h3>🔪 Разделочная доска</h3>
+                    <div class="cutting-area" id="cutting-area">
+                        <div id="instruction-text">Выбери ингредиент для нарезки</div>
+                        <div class="knife" id="knife" style="display: none;" onclick="cutIngredient()">🔪</div>
+                    </div>
+                    <div class="cut-pieces" id="cut-pieces"></div>
+                </div>
+            </div>
+
+            <div class="seasoning-area">
+                <h3>🧂 Приправы и специи</h3>
+                <p>Добавь приправы в миску с начинкой:</p>
+                <div class="seasoning-items">
+                    <div class="seasoning-item" data-seasoning="salt" onclick="addSeasoning('salt')">
+                        🧂 Соль
+                    </div>
+                    <div class="seasoning-item" data-seasoning="pepper" onclick="addSeasoning('pepper')">
+                        🌶️ Перец
+                    </div>
+                    <div class="seasoning-item" data-seasoning="herbs" onclick="addSeasoning('herbs')">
+                        🌿 Зелень
+                    </div>
+                </div>
+            </div>
+
+            <div class="dialog-controls">
+                <button class="back-button" onclick="goBack()">Назад</button>
+                <button class="next-button" id="next-button" onclick="goToNext('../pages/echpochmak-assembly.html')" style="display: none;">Лепить эчпочмаки</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../scripts/main.js"></script>
+    <script>
+        let currentIngredient = null;
+        let cutIngredients = [];
+        let addedSeasonings = [];
+        let cutCount = 0;
+        
+        const ingredientData = {
+            meat: { icon: '🥩', name: 'мясо', pieces: ['🟫', '🟤', '🤎'] },
+            potato: { icon: '🥔', name: 'картофель', pieces: ['🟨', '🟡', '🟠'] },
+            onion: { icon: '🧅', name: 'лук', pieces: ['⚪', '🤍', '⚫'] }
+        };
+        
+        function selectIngredient(ingredient) {
+            if (cutIngredients.includes(ingredient)) return;
+            
+            // Убираем выделение с предыдущего ингредиента
+            document.querySelectorAll('.ingredient-to-cut').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Выделяем текущий ингредиент
+            const ingredientEl = document.querySelector(`[data-ingredient="${ingredient}"]`);
+            ingredientEl.classList.add('selected');
+            
+            currentIngredient = ingredient;
+            setupCuttingArea(ingredient);
+        }
+        
+        function setupCuttingArea(ingredient) {
+            const cuttingArea = document.getElementById('cutting-area');
+            const instructionText = document.getElementById('instruction-text');
+            const knife = document.getElementById('knife');
+            
+            cuttingArea.classList.add('active');
+            
+            // Очищаем область
+            const existingIngredient = cuttingArea.querySelector('.ingredient-on-board');
+            if (existingIngredient) {
+                existingIngredient.remove();
+            }
+            
+            // Добавляем ингредиент на доску
+            const ingredientEl = document.createElement('div');
+            ingredientEl.className = 'ingredient-on-board';
+            ingredientEl.innerHTML = ingredientData[ingredient].icon;
+            ingredientEl.style.left = '50%';
+            ingredientEl.style.top = '50%';
+            ingredientEl.style.transform = 'translate(-50%, -50%)';
+            
+            cuttingArea.appendChild(ingredientEl);
+            
+            // Показываем нож и инструкцию
+            instructionText.textContent = `Нажми на нож, чтобы нарезать ${ingredientData[ingredient].name}`;
+            knife.style.display = 'block';
+            knife.style.right = '20px';
+            knife.style.top = '20px';
+            
+            cutCount = 0;
+        }
+        
+        function cutIngredient() {
+            if (!currentIngredient) return;
+            
+            cutCount++;
+            const knife = document.getElementById('knife');
+            const cutPieces = document.getElementById('cut-pieces');
+            
+            // Анимация ножа
+            knife.classList.add('cutting');
+            setTimeout(() => knife.classList.remove('cutting'), 500);
+            
+            // Добавляем кусочек
+            const piece = document.createElement('div');
+            piece.className = 'cut-piece';
+            const pieceIcon = ingredientData[currentIngredient].pieces[cutCount % 3];
+            piece.innerHTML = `${pieceIcon} кусочек`;
+            cutPieces.appendChild(piece);
+            
+            // Звуковой эффект
+            playSound('chop');
+            
+            // Проверяем завершение нарезки
+            if (cutCount >= 8) {
+                completeIngredientCutting();
+            } else {
+                document.getElementById('instruction-text').textContent = 
+                    `Нарезано: ${cutCount}/8 кусочков`;
+            }
+        }
+        
+        function completeIngredientCutting() {
+            cutIngredients.push(currentIngredient);
+            
+            // Отмечаем ингредиент как нарезанный
+            const ingredientEl = document.querySelector(`[data-ingredient="${currentIngredient}"]`);
+            ingredientEl.classList.remove('selected');
+            ingredientEl.classList.add('cut');
+            
+            // Обновляем индикатор прогресса
+            const stepEl = document.getElementById(`step-${currentIngredient === 'meat' ? 'meat' : currentIngredient === 'potato' ? 'potato' : 'onion'}`);
+            stepEl.classList.remove('active');
+            stepEl.classList.add('completed');
+            
+            // Добавляем в миску
+            addToBowl(currentIngredient);
+            
+            // Очищаем область нарезки
+            clearCuttingArea();
+            
+            // Переходим к следующему ингредиенту или завершаем
+            if (cutIngredients.length < 3) {
+                const nextIngredient = ['meat', 'potato', 'onion'].find(ing => !cutIngredients.includes(ing));
+                if (nextIngredient) {
+                    const nextStepEl = document.getElementById(`step-${nextIngredient}`);
+                    nextStepEl.classList.add('active');
+                    
+                    document.getElementById('dialog-text').textContent = 
+                        `Отлично! Теперь нарежь ${ingredientData[nextIngredient].name}.`;
+                }
+            } else {
+                // Все ингредиенты нарезаны
+                document.getElementById('step-season').classList.add('active');
+                document.getElementById('dialog-text').textContent = 
+                    'Замечательно! Все ингредиенты нарезаны. Теперь добавь приправы.';
+            }
+            
+            currentIngredient = null;
+            showSuccessMessage(`${ingredientData[cutIngredients[cutIngredients.length - 1]].name} нарезан!`);
+        }
+        
+        function clearCuttingArea() {
+            const cuttingArea = document.getElementById('cutting-area');
+            const instructionText = document.getElementById('instruction-text');
+            const knife = document.getElementById('knife');
+            const cutPieces = document.getElementById('cut-pieces');
+            
+            cuttingArea.classList.remove('active');
+            instructionText.textContent = 'Выбери следующий ингредиент';
+            knife.style.display = 'none';
+            cutPieces.innerHTML = '';
+            
+            const ingredientOnBoard = cuttingArea.querySelector('.ingredient-on-board');
+            if (ingredientOnBoard) {
+                ingredientOnBoard.remove();
+            }
+        }
+        
+        function addToBowl(ingredient) {
+            const bowlContents = document.getElementById('bowl-contents');
+            const currentText = bowlContents.textContent;
+            
+            if (currentText === 'Пусто') {
+                bowlContents.textContent = ingredientData[ingredient].name;
+            } else {
+                bowlContents.textContent += ` + ${ingredientData[ingredient].name}`;
+            }
+            
+            // Увеличиваем высоту содержимого
+            const currentHeight = parseInt(bowlContents.style.height) || 30;
+            bowlContents.style.height = Math.min(currentHeight + 10, 60) + 'px';
+        }
+        
+        function addSeasoning(seasoning) {
+            if (addedSeasonings.includes(seasoning)) return;
+            if (cutIngredients.length < 3) {
+                showMessage('Сначала нарежь все ингредиенты!', 'warning');
+                return;
+            }
+            
+            addedSeasonings.push(seasoning);
+            
+            const seasoningEl = document.querySelector(`[data-seasoning="${seasoning}"]`);
+            seasoningEl.classList.add('added');
+            
+            // Обновляем миску
+            const bowlContents = document.getElementById('bowl-contents');
+            const seasoningNames = {
+                salt: 'соль',
+                pepper: 'перец',
+                herbs: 'зелень'
+            };
+            
+            bowlContents.textContent += ` + ${seasoningNames[seasoning]}`;
+            
+            // Проверяем завершение
+            if (addedSeasonings.length >= 2) {
+                document.getElementById('step-season').classList.remove('active');
+                document.getElementById('step-season').classList.add('completed');
+                
+                document.getElementById('next-button').style.display = 'block';
+                document.getElementById('dialog-text').textContent = 
+                    'Превосходно! Начинка готова. Теперь можно лепить эчпочмаки!';
+                
+                showSuccessMessage('Начинка готова!');
+            }
+        }
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.innerHTML = `✅ ${message}`;
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #00b894, #00cec9);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 15px;
+                font-size: 1.2rem;
+                z-index: 1000;
+                animation: fadeInUp 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+        
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.innerHTML = `⚠️ ${message}`;
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #fdcb6e, #e17055);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 15px;
+                font-size: 1rem;
+                z-index: 1000;
+                animation: fadeInUp 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 2000);
+        }
+        
+        function playSound(soundName) {
+            console.log(`Играет звук: ${soundName}`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать - Татарский мастер-класс</title>
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="vn-container" style="background-image: url('../images/home.png');">
+        <div class="vn-character speaking">
+            <img src="../images/grandmother.png" alt="Бабушка Фатима" id="grandmother-img">
+        </div>
+        
+        <div class="vn-dialog-box" id="vn-dialog">
+            <div class="vn-speaker-name" id="vn-speaker">Бабушка Фатима</div>
+            <div class="vn-dialog-text" id="vn-text">
+                <!-- Текст будет добавлен через JavaScript -->
+            </div>
+            <div class="vn-controls">
+                <div class="vn-continue-hint">Нажмите "Далее" чтобы продолжить</div>
+                <button class="vn-next-button" onclick="nextVNDialog()" id="vn-next-btn">Далее</button>
+            </div>
+        </div>
+        
+        <div class="progress-bar" style="position: absolute; top: 20px; left: 20px; right: 20px; z-index: 5;">
+            <div class="progress-fill" style="width: 5%;" id="progress-fill"></div>
+        </div>
+    </div>
+    
+    <script src="../scripts/main.js"></script>
+</body>
+</html>

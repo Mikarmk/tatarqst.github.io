@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Эчпочмак: Замешивание теста - Татарский мастер-класс</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .kneading-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .dough-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dough-container:hover {
+            transform: scale(1.05);
+        }
+
+        .dough {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .dough.kneading {
+            animation: kneadingAnimation 1s ease-in-out;
+            background: linear-gradient(145deg, #ffeaa7, #fdcb6e);
+        }
+
+        .dough.ready {
+            background: linear-gradient(145deg, #fdcb6e, #e17055);
+            box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3);
+        }
+
+        @keyframes kneadingAnimation {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            50% { transform: scale(0.9) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .kneading-instructions {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .click-counter {
+            background: linear-gradient(145deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+        }
+
+        .timer-display {
+            background: linear-gradient(145deg, #fd79a8, #e84393);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .kneading-tips {
+            background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            max-width: 600px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .tip-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .hands-animation {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: handsMoving 2s ease-in-out infinite;
+        }
+
+        @keyframes handsMoving {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .dough-quality {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            max-width: 500px;
+        }
+
+        .quality-indicator {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .quality-indicator.good {
+            background: linear-gradient(145deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+
+        .quality-indicator.excellent {
+            background: linear-gradient(145deg, #00b894, #00cec9);
+            color: white;
+        }
+
+        .rest-timer {
+            background: linear-gradient(145deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .rest-timer.active {
+            display: block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 768px) {
+            .dough-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .dough {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-screen">
+            <h1 class="screen-title">🤲 Эчпочмак: Замешиваем тесто</h1>
+            
+            <div class="character-dialog">
+                <div class="character-avatar">👵🏻</div>
+                <div class="dialog-text">
+                    <p><strong>Бабушка Фатима:</strong></p>
+                    <p id="dialog-text">Теперь нужно хорошо замесить тесто. Нажимай на тесто, чтобы его замесить. Нужно сделать не менее 20 нажатий для хорошего теста!</p>
+                </div>
+            </div>
+
+            <div class="kneading-area">
+                <div class="kneading-instructions" id="instructions">
+                    Нажимай на тесто для замешивания
+                </div>
+
+                <div class="click-counter" id="click-counter">
+                    Замесов: <span id="knead-count">0</span> / 20
+                </div>
+
+                <div class="dough-container" onclick="kneadDough()">
+                    <div class="dough" id="dough">
+                        🍞
+                    </div>
+                    <div class="hands-animation" id="hands" style="display: none;">🤲</div>
+                </div>
+
+                <div class="dough-quality">
+                    <div class="quality-indicator" id="texture">
+                        <div>🤏</div>
+                        <div>Текстура</div>
+                        <div>Грубая</div>
+                    </div>
+                    <div class="quality-indicator" id="elasticity">
+                        <div>🤸</div>
+                        <div>Эластичность</div>
+                        <div>Слабая</div>
+                    </div>
+                    <div class="quality-indicator" id="smoothness">
+                        <div>✨</div>
+                        <div>Гладкость</div>
+                        <div>Неровная</div>
+                    </div>
+                </div>
+
+                <div class="rest-timer" id="rest-timer">
+                    <h3>⏰ Тесто отдыхает</h3>
+                    <p>Осталось времени: <span id="timer">60</span> секунд</p>
+                    <p>Тесто должно подняться и стать более пышным</p>
+                </div>
+            </div>
+
+            <div class="kneading-tips">
+                <h3>💡 Секреты замешивания теста</h3>
+                <div class="tip-item">
+                    <span class="tip-icon">👐</span>
+                    <span>Замешивайте тесто энергично, но не переусердствуйте</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">⏱️</span>
+                    <span>Хорошее тесто должно отдохнуть минимум 1 час</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🌡️</span>
+                    <span>Тесто должно быть тёплым, но не горячим</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">✋</span>
+                    <span>Готовое тесто не должно прилипать к рукам</span>
+                </div>
+            </div>
+
+            <div class="dialog-controls">
+                <button class="back-button" onclick="goBack()">Назад</button>
+                <button class="next-button" id="next-button" onclick="goToNext('../pages/echpochmak-filling.html')" style="display: none;">Готовить начинку</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 35%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../scripts/main.js"></script>
+    <script>
+        let kneadCount = 0;
+        let isResting = false;
+        let restTimer = 60;
+        let timerInterval;
+        
+        function kneadDough() {
+            if (isResting) return;
+            
+            kneadCount++;
+            updateKneadCounter();
+            
+            // Анимация замешивания
+            const dough = document.getElementById('dough');
+            const hands = document.getElementById('hands');
+            
+            dough.classList.add('kneading');
+            hands.style.display = 'block';
+            
+            setTimeout(() => {
+                dough.classList.remove('kneading');
+                hands.style.display = 'none';
+            }, 1000);
+            
+            // Обновляем качество теста
+            updateDoughQuality();
+            
+            // Проверяем завершение замешивания
+            if (kneadCount >= 20) {
+                completeDoughKneading();
+            }
+            
+            // Звуковой эффект (заглушка)
+            playSound('knead');
+        }
+        
+        function updateKneadCounter() {
+            document.getElementById('knead-count').textContent = kneadCount;
+            
+            // Обновляем инструкции
+            const instructions = document.getElementById('instructions');
+            if (kneadCount < 10) {
+                instructions.textContent = 'Продолжай замешивать! Тесто ещё грубое.';
+            } else if (kneadCount < 20) {
+                instructions.textContent = 'Хорошо! Тесто становится более эластичным.';
+            } else {
+                instructions.textContent = 'Отлично! Тесто готово для отдыха.';
+            }
+        }
+        
+        function updateDoughQuality() {
+            const texture = document.getElementById('texture');
+            const elasticity = document.getElementById('elasticity');
+            const smoothness = document.getElementById('smoothness');
+            
+            // Обновляем текстуру
+            if (kneadCount >= 7) {
+                texture.classList.add('good');
+                texture.querySelector('div:last-child').textContent = 'Мягкая';
+            }
+            if (kneadCount >= 15) {
+                texture.classList.remove('good');
+                texture.classList.add('excellent');
+                texture.querySelector('div:last-child').textContent = 'Идеальная';
+            }
+            
+            // Обновляем эластичность
+            if (kneadCount >= 10) {
+                elasticity.classList.add('good');
+                elasticity.querySelector('div:last-child').textContent = 'Хорошая';
+            }
+            if (kneadCount >= 18) {
+                elasticity.classList.remove('good');
+                elasticity.classList.add('excellent');
+                elasticity.querySelector('div:last-child').textContent = 'Отличная';
+            }
+            
+            // Обновляем гладкость
+            if (kneadCount >= 12) {
+                smoothness.classList.add('good');
+                smoothness.querySelector('div:last-child').textContent = 'Гладкая';
+            }
+            if (kneadCount >= 20) {
+                smoothness.classList.remove('good');
+                smoothness.classList.add('excellent');
+                smoothness.querySelector('div:last-child').textContent = 'Шелковистая';
+            }
+        }
+        
+        function completeDoughKneading() {
+            const dough = document.getElementById('dough');
+            dough.classList.add('ready');
+            dough.innerHTML = '🥖';
+            
+            // Показываем сообщение об успехе
+            showSuccessMessage('Тесто замешано идеально! Теперь оно должно отдохнуть.');
+            
+            // Запускаем таймер отдыха
+            startRestTimer();
+            
+            // Обновляем диалог
+            const dialogText = document.getElementById('dialog-text');
+            dialogText.textContent = 'Замечательно! Теперь тесто должно отдохнуть 1 минуту, чтобы стать более пышным. В реальности это займёт час!';
+        }
+        
+        function startRestTimer() {
+            isResting = true;
+            const restTimerDiv = document.getElementById('rest-timer');
+            restTimerDiv.classList.add('active');
+            
+            timerInterval = setInterval(() => {
+                restTimer--;
+                document.getElementById('timer').textContent = restTimer;
+                
+                if (restTimer <= 0) {
+                    clearInterval(timerInterval);
+                    completeResting();
+                }
+            }, 1000);
+        }
+        
+        function completeResting() {
+            const restTimerDiv = document.getElementById('rest-timer');
+            restTimerDiv.innerHTML = `
+                <h3>✅ Тесто готово!</h3>
+                <p>Тесто отдохнуло и готово для формирования эчпочмаков</p>
+            `;
+            
+            document.getElementById('next-button').style.display = 'block';
+            
+            // Обновляем диалог
+            const dialogText = document.getElementById('dialog-text');
+            dialogText.textContent = 'Прекрасно! Тесто готово. Теперь приготовим начинку для наших эчпочмаков!';
+            
+            showSuccessMessage('Тесто готово! Переходим к начинке.');
+        }
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.innerHTML = `✅ ${message}`;
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #00b894, #00cec9);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 15px;
+                font-size: 1.2rem;
+                z-index: 1000;
+                animation: fadeInUp 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+        
+        function playSound(soundName) {
+            console.log(`Играет звук: ${soundName}`);
+            // Здесь можно добавить реальные звуковые эффекты
+        }
+    </script>
+</body>
+</html>
